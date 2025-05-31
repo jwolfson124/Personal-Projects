@@ -167,3 +167,5 @@ df['Winning_Team'] = np.where(df['FTR'] == 'A', df['Away'], np.where(df['FTR'] =
 df['points'] = np.where(df['Winning_Team'] != 'D', 3, 1)
 
 df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
+
+
