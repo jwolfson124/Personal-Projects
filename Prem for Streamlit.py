@@ -191,7 +191,7 @@ df['Capacity'] = df.apply(get_capacity, axis=1)
 # In[181]:
 
 
-display(df.head(5))
+#display(df.head(5))
 
 
 # ## Add Columns to the DF
