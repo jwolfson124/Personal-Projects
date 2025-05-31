@@ -36,7 +36,7 @@ df.head(3)
 #make the sure the dataset is only looking at the last 3 years of premier league
 df = df[df['Season_End_Year'] >= 2021]
 
-df
+#df
 
 
 # # Dataset Updates
