@@ -238,5 +238,5 @@ seasons = df['Season_End_Year'].unique()
 select_season = st.selectbox("Select a Premier League Season: ", seasons)
 
 #use the selection to limit the visual
-filtered_table = df[df['Season_End_Year'] == select_season]
+filtered_table = prem_table[prem_table['Season_End_Year'] == select_season]
 st.dataframe(filtered_table)
