@@ -377,8 +377,8 @@ select_season = st.selectbox("Select a Premier League Season to get the Stats!",
 
 
 #rename columns and filter values
-#filtered_prem_table = prem_table.rename(columns={'points': 'Points', 'rank' : 'Rank'})
-#filtered_prem_table = filtered_prem_table[prem_table['Season_End_Year'] == select_season].drop(columns = 'Season_End_Year').set_index('Rank')
+filtered_prem_table = prem_table.rename(columns={'points': 'Points', 'rank' : 'Rank'})
+filtered_prem_table = filtered_prem_table[prem_table['Season_End_Year'] == select_season].drop(columns = 'Season_End_Year').set_index('Rank')
 
 def highlight_color(row):
     if row.name == 1:
@@ -393,7 +393,7 @@ def highlight_color(row):
         return ['background-color: red'] * len(row)
         
 
-#prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
+prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
 # In[203]:
