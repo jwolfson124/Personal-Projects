@@ -191,7 +191,7 @@ df['Capacity'] = df.apply(get_capacity, axis=1)
 # In[181]:
 
 
-#display(df.head(5))
+display(df.head(5))
 
 
 # ## Add Columns to the DF
@@ -298,7 +298,7 @@ prem_table['rank'] = prem_table.groupby('Season_End_Year').cumcount() + 1
 #create the final premiere league table
 prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Difference', 'Goals']]
 
-prem_table
+#prem_table
 
 
 # # End of Premier League Table Build
@@ -309,7 +309,7 @@ prem_table
 
 
 #take the tie dataframe that we had before and then also create a dataframe that holds not ties
-tie_df
+#tie_df
 not_tie_df = df[df['FTR'] != 'D']
 
 #for all games that are not ties count the number of wins for the winning team
@@ -333,7 +333,7 @@ all_games = pd.concat([tie_games, win_count]).groupby(['Season_End_Year', 'Team'
 comp_teams = all_games.sort_values(by=['Season_End_Year', 'Games'], ascending=[False, False])
 comp_teams['rank'] = comp_teams.groupby('Season_End_Year').cumcount() + 1
 
-comp_teams.head(1)
+#comp_teams.head(1)
 
 
 # # End of the most competitive teams build
@@ -355,7 +355,7 @@ away_winners = pd.merge(away_winners, rank_table, on=['Season_End_Year', 'Team']
 hardest_stadiums_win = away_winners.sort_values(by=['Season_End_Year', 'Games Lost', 'rank'], ascending=[False, True, True])
 hardest_stadiums_win['Odds of Winning'] = round(hardest_stadiums_win['Games Lost'] / 19,4)
 
-display(hardest_stadiums_win.head(2))
+#display(hardest_stadiums_win.head(2))
 
 
 # In[199]:
