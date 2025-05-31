@@ -1,4 +1,4 @@
-pip install kagglehub pandas streamlit
+$ pip install kagglehub pandas streamlit
 #import necessary libraries
 import kagglehub
 import numpy as np
