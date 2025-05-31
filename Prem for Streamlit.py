@@ -382,18 +382,18 @@ filtered_prem_table = filtered_prem_table[prem_table['Season_End_Year'] == selec
 
 def highlight_color(row):
     if row.name == 1:
-        return ['background-color: khaki'] * len(row)
+        return ['background-color: khaki; color: black'] * len(row)
     elif row.name == 2:
-        return ['background-color: lightgreen'] * len(row)
+        return ['background-color: lightgreen; color: black'] * len(row)
     elif row.name < 5:
-        return ['background-color: lightblue'] * len(row)
+        return ['background-color: lightblue; color: black'] * len(row)
     elif row.name < 18:
-        return ['background-color: white'] * len(row)
+        return ['background-color: white; color: black'] * len(row)
     else:
-        return ['background-color: red'] * len(row)
+        return ['background-color: red; color: black'] * len(row)
         
 
-prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
+#prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
 # In[203]:
