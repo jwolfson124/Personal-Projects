@@ -10,7 +10,7 @@ display(most_competitive_teams.head(2)) ##which teams were the hardest to beat h
 display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
-# In[171]:
+# In[173]:
 
 
 #import libraries and packages
@@ -24,7 +24,7 @@ import streamlit as st
 import matplotlib as plt
 
 
-# In[12]:
+# In[175]:
 
 
 #take the path from the kaggle website
@@ -43,7 +43,7 @@ df
 
 # ### add in the stadium name for the teams
 
-# In[14]:
+# In[177]:
 
 
 team_to_stadium = {
@@ -84,7 +84,7 @@ df['Stadium'] = df.apply(get_stadium, axis=1)
 
 # ### add in the name of the stadium and the capacity for the home team
 
-# In[16]:
+# In[179]:
 
 
 ##build the capacity dictionaries
@@ -188,7 +188,7 @@ def get_capacity(row):
 df['Capacity'] = df.apply(get_capacity, axis=1)
 
 
-# In[18]:
+# In[181]:
 
 
 display(df.head(5))
@@ -196,7 +196,7 @@ display(df.head(5))
 
 # ## Add Columns to the DF
 
-# In[20]:
+# In[183]:
 
 
 #using the where functioon, which operates as in if statement add in the winning team column
@@ -208,7 +208,7 @@ df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
 
 # # Building the Premier League Table
 
-# In[22]:
+# In[185]:
 
 
 ##split the df into winning teams vs draws. Use this to properly give points to the teams
@@ -230,7 +230,7 @@ draw_points = pd.concat([home_results,away_results]).groupby(['Season_End_Year',
 
 
 
-# In[24]:
+# In[187]:
 
 
 #create a df that holds all points for winning teams then join to draw_points to recreate the prem table over the last 3 years
@@ -255,7 +255,7 @@ final_table = points_tally_df.sort_values(['Season_End_Year', 'points'], ascendi
 #final_table
 
 
-# In[26]:
+# In[189]:
 
 
 ##calculate the goals scored
@@ -271,7 +271,7 @@ goals_scored = pd.concat([home_goals, away_goals]).groupby(['Season_End_Year', '
 points_goals_df = pd.merge(final_table, goals_scored, on=['Season_End_Year','Team'])
 
 
-# In[28]:
+# In[191]:
 
 
 #groupy by the home then away team and sum the different goals
@@ -288,7 +288,7 @@ goal_difference = pd.concat([home, away]).groupby(['Season_End_Year', 'Team'], a
 final_prem_table = pd.merge(points_goals_df, goal_difference, on=['Season_End_Year', 'Team'])
 
 
-# In[30]:
+# In[193]:
 
 
 prem_table = final_prem_table.sort_values(['Season_End_Year','points', 'Goal Difference', 'Goals'], ascending=[True, False, False, False])
@@ -305,7 +305,7 @@ prem_table
 
 # # The Teams that are hardest to beat Home and Away
 
-# In[32]:
+# In[195]:
 
 
 #take the tie dataframe that we had before and then also create a dataframe that holds not ties
@@ -340,7 +340,7 @@ comp_teams.head(1)
 
 # # Hardest Stadiums To Visit
 
-# In[34]:
+# In[197]:
 
 
 away_winners = df[df['Away'] == df['Winning_Team']]
@@ -358,7 +358,7 @@ hardest_stadiums_win['Odds of Winning'] = round(hardest_stadiums_win['Games Lost
 display(hardest_stadiums_win.head(2))
 
 
-# In[126]:
+# In[199]:
 
 
 #write an intro
@@ -367,18 +367,18 @@ st.write("This dashboard will give you insight into the statistics within the 20
 #st.write("Please select a season to view")
 
 #identify all available seasons and provide options to view
-seasons = df['Season_End_Year'].unique()
-select_season = st.selectbox("Select a Premier League Season to get the Stats!", seasons)
+#seasons = df['Season_End_Year'].unique()
+#select_season = st.selectbox("Select a Premier League Season to get the Stats!", seasons)
 
 
 # # Create Colored Prem Table
 
-# In[163]:
+# In[201]:
 
 
 #rename columns and filter values
-filtered_prem_table = prem_table.rename(columns={'points': 'Points', 'rank' : 'Rank'})
-filtered_prem_table = filtered_prem_table[prem_table['Season_End_Year'] == select_season].drop(columns = 'Season_End_Year').set_index('Rank')
+#filtered_prem_table = prem_table.rename(columns={'points': 'Points', 'rank' : 'Rank'})
+#filtered_prem_table = filtered_prem_table[prem_table['Season_End_Year'] == select_season].drop(columns = 'Season_End_Year').set_index('Rank')
 
 def highlight_color(row):
     if row.name == 1:
@@ -392,53 +392,18 @@ def highlight_color(row):
     else:
         return ['background-color: red'] * len(row)
         
-prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
+
+#prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
-# In[169]:
+# In[203]:
 
 
-col1, col2 = st.columns(2)
+#col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader('League Table')
-    st.dataframe(prem_table_image)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+#with col1:
+#    st.subheader('League Table')
+#    st.dataframe(prem_table_image)
 
 
 # In[ ]:
