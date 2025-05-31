@@ -1,4 +1,9 @@
-#import streamlit as st
+#import necessary libraries
+!pip install kagglehub pandas
+import kagglehub
+import numpy as np
+import pandas as pd
+import os
 import streamlit as st
 
 st.title("""
