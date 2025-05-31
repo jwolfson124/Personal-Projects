@@ -367,8 +367,8 @@ st.write("This dashboard will give you insight into the statistics within the 20
 #st.write("Please select a season to view")
 
 #identify all available seasons and provide options to view
-#seasons = df['Season_End_Year'].unique()
-#select_season = st.selectbox("Select a Premier League Season to get the Stats!", seasons)
+seasons = df['Season_End_Year'].unique()
+select_season = st.selectbox("Select a Premier League Season to get the Stats!", seasons)
 
 
 # # Create Colored Prem Table
