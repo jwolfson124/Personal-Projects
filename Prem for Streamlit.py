@@ -5,9 +5,9 @@
 
 
 #this cell once everything is run will hold all of the final datasets
-display(prem_table.head(2)) #this is the premier league table for the last 3 years with points, goal difference, and goals for
-display(most_competitive_teams.head(2)) ##which teams were the hardest to beat home and away
-display(hardest_stadiums_win.head(2))##Hardest to beat at home
+#display(prem_table.head(2)) #this is the premier league table for the last 3 years with points, goal difference, and goals for
+#display(most_competitive_teams.head(2)) ##which teams were the hardest to beat home and away
+#display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
 # In[173]:
