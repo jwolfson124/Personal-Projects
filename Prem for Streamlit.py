@@ -393,7 +393,7 @@ def highlight_color(row):
         return ['background-color: red; color: black'] * len(row)
         
 
-#prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
+prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
 # In[203]:
