@@ -237,8 +237,10 @@ prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Diff
 seasons = df['Season_End_Year'].unique()
 select_season = st.selectbox("Select a Premier League Season: ", seasons)
 
+
 #use the selection to limit the visual
 filtered_table = prem_table[prem_table['Season_End_Year'] == select_season]
 st.dataframe(filtered_table.drop(columns=['Season_End_Year']).set_index('rank'))
+
 
 st.write("Hello")
