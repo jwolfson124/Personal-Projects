@@ -239,8 +239,15 @@ select_season = st.selectbox("Select a Premier League Season: ", seasons)
 
 
 #use the selection to limit the visual
-filtered_table = prem_table[prem_table['Season_End_Year'] == select_season]
-st.dataframe(filtered_table.drop(columns=['Season_End_Year']).set_index('rank'))
+def highlight_rank(row):
+    if row['rank'] == 1:
+        return ['background-color: lightgreen'] * len(row)
+    elif 2<= row['rank'] <= 4:
+        return ['background-color: khaki'] * len(row)
+    else:
+        return [''] * len(row)
+
+st.dataframe(filtered_table.style.apply(highlight_rank, axis=1))
 
 
 st.write("Hello")
