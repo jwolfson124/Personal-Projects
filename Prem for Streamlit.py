@@ -401,9 +401,9 @@ prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 col1, col2 = st.columns(2)
 
-#with col1:
-#    st.subheader('League Table')
-#    st.dataframe(prem_table_image)
+with col1:
+    st.subheader('League Table')
+    st.dataframe(prem_table_image)
 
 
 # In[ ]:
