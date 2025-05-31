@@ -168,4 +168,70 @@ df['points'] = np.where(df['Winning_Team'] != 'D', 3, 1)
 
 df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
 
+#CREATE THE PREMIER LEAGUE TABLE
+##split the df into winning teams vs draws. Use this to properly give points to the teams
+tie_df = df[df['Winning_Team'] == 'D']
+
+#Home teams points then away teams points
+#columns_to_group = ['Season_End_Year', 'Home']
+
+
+home_results = tie_df.groupby(['Season_End_Year', 'Home'], as_index=False)['points'].sum().rename(columns={'Home':'Team'})
+away_results = tie_df.groupby(['Season_End_Year', 'Away'], as_index=False)['points'].sum().rename(columns={'Away':'Team'})
+
+draw_points = pd.concat([home_results,away_results]).groupby(['Season_End_Year', 'Team'], as_index=False)['points'].sum()
+
+#create a df that holds all points for winning teams then join to draw_points to recreate the prem table over the last 3 years
+#remove all instances of D
+
+#create the path
+win_results = df[df['FTR'] != 'D'].copy()
+win_points = win_results.groupby(['Season_End_Year', 'Winning_Team'], as_index=False)['points'].sum()
+
+win_results.groupby(['Season_End_Year', 'Winning_Team'], as_index=False)['points'].sum()
+win_points = win_points.rename(columns={'Winning_Team' : 'Team'})
+
+
+#display(win_points.head())
+#display(draw_points.head())
+
+#merge and group by then sort to get the final premiere league table
+points_df = pd.concat([win_points,draw_points])
+points_tally_df = points_df.groupby(['Season_End_Year', 'Team'], as_index=False)['points'].sum()
+
+final_table = points_tally_df.sort_values(['Season_End_Year', 'points'], ascending=[True,False]).reset_index(drop=True)
+
+##calculate the goals scored
+home_goals = df[['Season_End_Year','Home', 'HomeGoals']].copy()
+home_goals = home_goals.groupby(['Season_End_Year', 'Home'], as_index=False)['HomeGoals'].sum().rename(columns={'Home' : 'Team', 'HomeGoals': 'Goals'})
+
+away_goals = df[['Season_End_Year','Away', 'AwayGoals']].copy()
+away_goals = away_goals.groupby(['Season_End_Year', 'Away'], as_index=False)['AwayGoals'].sum().rename(columns={'Away' : 'Team', 'AwayGoals': 'Goals'})
+
+goals_scored = pd.concat([home_goals, away_goals]).groupby(['Season_End_Year', 'Team'], as_index=False)['Goals'].sum()
+
+#merge the datasets with the goals
+points_goals_df = pd.merge(final_table, goals_scored, on=['Season_End_Year','Team'])
+
+#groupy by the home then away team and sum the different goals
+home = df.groupby(['Season_End_Year', 'Home'], as_index=False)[['HomeGoals', 'AwayGoals']].sum().rename(columns={'Home': 'Team'})
+away = df.groupby(['Season_End_Year', 'Away'], as_index=False)[['HomeGoals', 'AwayGoals']].sum().rename(columns={'Away': 'Team'})
+
+#calculate the goal difference home and away
+home['Goal Difference'] = home['HomeGoals'] - home['AwayGoals']
+away['Goal Difference'] = away['AwayGoals'] - away['HomeGoals']
+
+goal_difference = pd.concat([home, away]).groupby(['Season_End_Year', 'Team'], as_index=False)['Goal Difference'].sum()
+
+#join the final prem teams
+final_prem_table = pd.merge(points_goals_df, goal_difference, on=['Season_End_Year', 'Team'])
+
+prem_table = final_prem_table.sort_values(['Season_End_Year','points', 'Goal Difference', 'Goals'], ascending=[True, False, False, False])
+
+prem_table['rank'] = prem_table.groupby('Season_End_Year').cumcount() + 1
+
+#create the final premiere league table
+prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Difference', 'Goals']]
+
+prem_table.head()
 
