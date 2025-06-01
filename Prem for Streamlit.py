@@ -405,7 +405,7 @@ with col1:
     st.subheader('League Table')
     st.dataframe(prem_table_image)
 
-st.write("Hi Hailey! You're So Hot!!!!")
+
 
 
 # In[ ]:
