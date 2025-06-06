@@ -25,7 +25,7 @@ import matplotlib as plt
 
 
 # In[175]:
-
+st.set_page_config(layout='wide')
 
 #take the path from the kaggle website
 path = kagglehub.dataset_download("evangower/premier-league-matches-19922022")
