@@ -10,7 +10,7 @@
 #display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
-# In[173]:
+# In[217]:
 
 
 #import libraries and packages
@@ -22,10 +22,12 @@ from matplotlib.ticker import PercentFormatter
 import numpy as np
 import streamlit as st
 import matplotlib as plt
+import altair as alt
+st.set_page_config(layout='wide') #make sure we can use the entire streamlit page
 
 
 # In[175]:
-st.set_page_config(layout='wide')
+
 
 #take the path from the kaggle website
 path = kagglehub.dataset_download("evangower/premier-league-matches-19922022")
@@ -373,7 +375,7 @@ select_season = st.selectbox("Select a Premier League Season to get the Stats!",
 
 # # Create Colored Prem Table
 
-# In[201]:
+# In[368]:
 
 
 #rename columns and filter values
@@ -396,20 +398,46 @@ def highlight_color(row):
 prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
-# In[203]:
+# In[370]:
 
 
-col1, col2 = st.columns([1,3])
+col1, col2 = st.columns(2)
 
 with col1:
     st.subheader('League Table')
     st.dataframe(prem_table_image)
 
 
+# # Goals per Team with Average Line
+
+# In[372]:
 
 
-# In[ ]:
+#goals scored by rank
+filtered_prem_table = filtered_prem_table.reset_index().rename(columns={'index':'Rank'})
+x = filtered_prem_table['Team']
+y = filtered_prem_table['Goals']
+average_goals = filtered_prem_table['Goals'].mean()
 
+#create chart 1
+chart = alt.Chart(filtered_prem_table).mark_bar().encode(
+    x=alt.X('Team:N', sort=filtered_prem_table['Team'].tolist(), title='Team'),
+    y=alt.Y('Goals:Q', title='Goals Scored'),
+    tooltip=['Rank','Team', 'Goals'],
+    color=alt.Color('Goals:Q', scale=alt.Scale(scheme='blues'))
+)
 
+#create mean line
+mean_line = alt.Chart(pd.DataFrame({'Average Goals': [average_goals]})).mark_rule(color='red'
+                                                                     ).encode(y='Average Goals:Q')
 
+#create final image
+final_chart = (chart + mean_line).properties(
+    title='Goals Scored by Rank',
+    width=600,
+    height=400)
+
+with col2:
+    st.subheader('Goals by Rank')
+    st.altair_chart(final_chart)
 
