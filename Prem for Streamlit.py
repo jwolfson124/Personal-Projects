@@ -378,19 +378,19 @@ select_season = st.selectbox("Select a Premier League Season to get the Stats!",
 # In[249]:
 
 
-select_season = 2023
-year_table = prem_table[prem_table['Season_End_Year'] == select_season]
+#select_season = 2023
+#year_table = prem_table[prem_table['Season_End_Year'] == select_season]
 
 #total goals + average goals
-total_goals = sum(year_table['Goals'])
+#total_goals = sum(year_table['Goals'])
 
-average_goals = total_goals / (38 * 10)
+#average_goals = total_goals / (38 * 10)
 
 #most goals in a game
-games = df[df['Season_End_Year'] == select_season].copy()
-games['Total Goals'] = games['HomeGoals'] + games['AwayGoals']
+#games = df[df['Season_End_Year'] == select_season].copy()
+#games['Total Goals'] = games['HomeGoals'] + games['AwayGoals']
 
-most_goals_in_game = max(games['Total Goals'])
+#most_goals_in_game = max(games['Total Goals'])
 
 
 #col1, col2, col3 = st.columns(3)
