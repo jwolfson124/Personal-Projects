@@ -10,10 +10,12 @@
 #display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
-# In[217]:
+# In[151]:
 
 
 #import libraries and packages
+#from collections 
+import defaultdict
 import kagglehub
 import numpy as np
 import pandas as pd
@@ -26,7 +28,7 @@ import altair as alt
 st.set_page_config(layout='wide') #make sure we can use the entire streamlit page
 
 
-# In[175]:
+# In[10]:
 
 
 #take the path from the kaggle website
@@ -45,7 +47,7 @@ df = df[df['Season_End_Year'] >= 2021]
 
 # ### add in the stadium name for the teams
 
-# In[177]:
+# In[12]:
 
 
 team_to_stadium = {
@@ -86,7 +88,7 @@ df['Stadium'] = df.apply(get_stadium, axis=1)
 
 # ### add in the name of the stadium and the capacity for the home team
 
-# In[179]:
+# In[14]:
 
 
 ##build the capacity dictionaries
@@ -198,7 +200,7 @@ df['Capacity'] = df.apply(get_capacity, axis=1)
 
 # ## Add Columns to the DF
 
-# In[183]:
+# In[16]:
 
 
 #using the where functioon, which operates as in if statement add in the winning team column
@@ -210,7 +212,7 @@ df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
 
 # # Building the Premier League Table
 
-# In[185]:
+# In[18]:
 
 
 ##split the df into winning teams vs draws. Use this to properly give points to the teams
@@ -232,7 +234,7 @@ draw_points = pd.concat([home_results,away_results]).groupby(['Season_End_Year',
 
 
 
-# In[187]:
+# In[20]:
 
 
 #create a df that holds all points for winning teams then join to draw_points to recreate the prem table over the last 3 years
@@ -257,7 +259,7 @@ final_table = points_tally_df.sort_values(['Season_End_Year', 'points'], ascendi
 #final_table
 
 
-# In[189]:
+# In[22]:
 
 
 ##calculate the goals scored
@@ -273,7 +275,7 @@ goals_scored = pd.concat([home_goals, away_goals]).groupby(['Season_End_Year', '
 points_goals_df = pd.merge(final_table, goals_scored, on=['Season_End_Year','Team'])
 
 
-# In[191]:
+# In[24]:
 
 
 #groupy by the home then away team and sum the different goals
@@ -290,7 +292,7 @@ goal_difference = pd.concat([home, away]).groupby(['Season_End_Year', 'Team'], a
 final_prem_table = pd.merge(points_goals_df, goal_difference, on=['Season_End_Year', 'Team'])
 
 
-# In[193]:
+# In[26]:
 
 
 prem_table = final_prem_table.sort_values(['Season_End_Year','points', 'Goal Difference', 'Goals'], ascending=[True, False, False, False])
@@ -307,7 +309,7 @@ prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Diff
 
 # # The Teams that are hardest to beat Home and Away
 
-# In[195]:
+# In[28]:
 
 
 #take the tie dataframe that we had before and then also create a dataframe that holds not ties
@@ -342,7 +344,7 @@ comp_teams['rank'] = comp_teams.groupby('Season_End_Year').cumcount() + 1
 
 # # Hardest Stadiums To Visit
 
-# In[197]:
+# In[30]:
 
 
 away_winners = df[df['Away'] == df['Winning_Team']]
@@ -360,7 +362,7 @@ hardest_stadiums_win['Odds of Winning'] = round(hardest_stadiums_win['Games Lost
 #display(hardest_stadiums_win.head(2))
 
 
-# In[199]:
+# In[75]:
 
 
 #write an intro
@@ -371,6 +373,33 @@ st.write("This dashboard will give you insight into the statistics within the 20
 #identify all available seasons and provide options to view
 seasons = df['Season_End_Year'].unique()
 select_season = st.selectbox("Select a Premier League Season to get the Stats!", seasons)
+
+
+# ## Add Totals / Averages
+
+# In[249]:
+
+
+select_season = 2023
+year_table = prem_table[prem_table['Season_End_Year'] == select_season]
+
+#total goals + average goals
+total_goals = sum(year_table['Goals'])
+
+average_goals = total_goals / (38 * 10)
+
+#most goals in a game
+games = df[df['Season_End_Year'] == select_season].copy()
+games['Total Goals'] = games['HomeGoals'] + games['AwayGoals']
+
+most_goals_in_game = max(games['Total Goals'])
+
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.subheader('Total Premier League Goals')
+    st.metric(label=' ',value=total_goals)
 
 
 # # Create Colored Prem Table
