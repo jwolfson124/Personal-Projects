@@ -14,8 +14,6 @@
 
 
 #import libraries and packages
-#from collections 
-import defaultdict
 import kagglehub
 import numpy as np
 import pandas as pd
