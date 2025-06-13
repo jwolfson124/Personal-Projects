@@ -395,11 +395,11 @@ games['Total Goals'] = games['HomeGoals'] + games['AwayGoals']
 most_goals_in_game = max(games['Total Goals'])
 
 
-col1, col2, col3 = st.columns(3)
+#col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.subheader('Total Premier League Goals')
-    st.metric(label=' ',value=total_goals)
+#with col1:
+#    st.subheader('Total Premier League Goals')
+#    st.metric(label=' ',value=total_goals)
 
 
 # # Create Colored Prem Table
