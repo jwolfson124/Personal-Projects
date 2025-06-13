@@ -4,4 +4,3 @@ numpy
 streamlit
 matplotlib
 altair
-collections
