@@ -411,7 +411,7 @@ stadium_visit = hardest_stadiums_win[hardest_stadiums_win['Season_End_Year']==se
 index_use = stadium_visit['Odds of Winning'].idxmin()
 
 #find the odds of winning, team, and stadium
-odds_of_winning = round(stadium_visit['Odds of Winning'][index_use],4)
+odds_of_winning = round(stadium_visit['Odds of Winning'][index_use],3)
 odds_of_winning = str(odds_of_winning*100) + "%"
 
 stadium, team = stadium_visit[['Stadium', 'Team']].loc[index_use]
