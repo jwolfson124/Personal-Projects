@@ -504,3 +504,4 @@ with col2:
 
 final_chart
 
+st.write('hello')
