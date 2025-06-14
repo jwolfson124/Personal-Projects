@@ -398,6 +398,14 @@ with col1:
     st.subheader('Total Premier League Goals')
     st.metric(label='Total Premier League Goals',value=total_goals)
 
+with col2:
+    st.subheader('Most Goals Scored in 1 Match')
+    st.metric(label='Most Goals Scored in 1 Match', value=most_goals_in_game)
+
+with col3:
+    st.subheader('Average Goals Per Game')
+    st.metric(label='Average Goals Per Game', value=average_goals)
+
 
 # # Create Colored Prem Table
 
