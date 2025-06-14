@@ -411,14 +411,14 @@ stadium_visit = hardest_stadiums_win[hardest_stadiums_win['Season_End_Year']==se
 index_use = stadium_visit['Odds of Winning'].idxmin()
 
 #find the odds of winning, team, and stadium
-odds_of_winning = stadium_visit['Odds of Winning'][index_use]
+odds_of_winning = round(stadium_visit['Odds of Winning'][index_use],2)
 odds_of_winning = str(odds_of_winning*100) + "%"
 
 stadium, team = stadium_visit[['Stadium', 'Team']].loc[index_use]
 
 with col4:
     #st.subheader(f"Odds of Winning when visiting {team}'s {stadium}")
-    st.metric(label = f"Lowest Away Win Odds: {team} – {stadium}", value=round(odds_of_winning,2))
+    st.metric(label = f"Lowest Away Win Odds: {team} – {stadium}", value=odds_of_winning)
 
 
 #least amount of games lost
