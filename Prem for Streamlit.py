@@ -10,7 +10,7 @@
 #display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
-# In[323]:
+# In[9]:
 
 
 #import libraries and packages
@@ -26,7 +26,7 @@ import altair as alt
 st.set_page_config(layout='wide') #make sure we can use the entire streamlit page
 
 
-# In[325]:
+# In[11]:
 
 
 #take the path from the kaggle website
@@ -45,7 +45,7 @@ df = df[df['Season_End_Year'] >= 2021]
 
 # ### add in the stadium name for the teams
 
-# In[327]:
+# In[13]:
 
 
 team_to_stadium = {
@@ -86,7 +86,7 @@ df['Stadium'] = df.apply(get_stadium, axis=1)
 
 # ### add in the name of the stadium and the capacity for the home team
 
-# In[329]:
+# In[15]:
 
 
 ##build the capacity dictionaries
@@ -198,7 +198,7 @@ df['Capacity'] = df.apply(get_capacity, axis=1)
 
 # ## Add Columns to the DF
 
-# In[331]:
+# In[17]:
 
 
 #using the where functioon, which operates as in if statement add in the winning team column
@@ -210,7 +210,7 @@ df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
 
 # # Building the Premier League Table
 
-# In[333]:
+# In[19]:
 
 
 ##split the df into winning teams vs draws. Use this to properly give points to the teams
@@ -232,7 +232,7 @@ draw_points = pd.concat([home_results,away_results]).groupby(['Season_End_Year',
 
 
 
-# In[335]:
+# In[21]:
 
 
 #create a df that holds all points for winning teams then join to draw_points to recreate the prem table over the last 3 years
@@ -257,7 +257,7 @@ final_table = points_tally_df.sort_values(['Season_End_Year', 'points'], ascendi
 #final_table
 
 
-# In[337]:
+# In[23]:
 
 
 ##calculate the goals scored
@@ -273,7 +273,7 @@ goals_scored = pd.concat([home_goals, away_goals]).groupby(['Season_End_Year', '
 points_goals_df = pd.merge(final_table, goals_scored, on=['Season_End_Year','Team'])
 
 
-# In[339]:
+# In[25]:
 
 
 #groupy by the home then away team and sum the different goals
@@ -290,7 +290,7 @@ goal_difference = pd.concat([home, away]).groupby(['Season_End_Year', 'Team'], a
 final_prem_table = pd.merge(points_goals_df, goal_difference, on=['Season_End_Year', 'Team'])
 
 
-# In[341]:
+# In[27]:
 
 
 prem_table = final_prem_table.sort_values(['Season_End_Year','points', 'Goal Difference', 'Goals'], ascending=[True, False, False, False])
@@ -307,7 +307,7 @@ prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Diff
 
 # # The Teams that are hardest to beat Home and Away
 
-# In[343]:
+# In[29]:
 
 
 #take the tie dataframe that we had before and then also create a dataframe that holds not ties
@@ -342,7 +342,7 @@ comp_teams['rank'] = comp_teams.groupby('Season_End_Year').cumcount() + 1
 
 # # Hardest Stadiums To Visit
 
-# In[435]:
+# In[31]:
 
 
 away_winners = df[df['Away'] == df['Winning_Team']]
@@ -360,7 +360,7 @@ hardest_stadiums_win['Odds of Winning'] = round(hardest_stadiums_win['Games Lost
 #display(hardest_stadiums_win.head(2))
 
 
-# In[347]:
+# In[33]:
 
 
 #write an intro
@@ -375,7 +375,7 @@ select_season = st.selectbox("Select a Premier League Season to get the Stats!",
 
 # ## Add Totals / Averages
 
-# In[433]:
+# In[45]:
 
 
 year_table = prem_table[prem_table['Season_End_Year'] == select_season]
@@ -399,12 +399,12 @@ with col1:
     st.metric(label='Total Premier League Goals',value=total_goals)
 
 with col2:
-    st.subheader('Most Goals Scored in 1 Match')
-    st.metric(label=' ', value=most_goals_in_game)
+    #st.subheader('Most Goals Scored in 1 Match')
+    st.metric(label='Most Goals Scored in 1 Match', value=most_goals_in_game)
 
 with col3:
-    st.subheader('Average Goals Per Game')
-    st.metric(label=' ', value=average_goals)
+    #st.subheader('Average Goals Per Game')
+    st.metric(label='Average Goals Per Game', value=average_goals)
 
 #most challenging stadiums to visit win percentage
 stadium_visit = hardest_stadiums_win[hardest_stadiums_win['Season_End_Year']==select_season]
@@ -417,8 +417,8 @@ odds_of_winning = str(odds_of_winning*100) + "%"
 stadium, team = stadium_visit[['Stadium', 'Team']].loc[index_use]
 
 with col4:
-    st.subheader(f"Odds of Winning when visiting {team}'s {stadium}")
-    st.metric(label = ' ', value=odds_of_winning)
+    #st.subheader(f"Odds of Winning when visiting {team}'s {stadium}")
+    st.metric(label = f"Lowest Away Win Odds: {team} – {stadium}", value=odds_of_winning)
 
 
 #least amount of games lost
@@ -429,13 +429,13 @@ lost_games = 38 - comp_year.loc[comp_index]['Games']
 team = comp_year.loc[comp_index]['Team']
 
 with col5:
-    st.subheader(f"Least Amount of Games Lost: {team}")
-    st.metric(label = ' ', value=lost_games)
+    #st.subheader(f"Least Amount of Games Lost: {team}")
+    st.metric(label = f"Least Amount of Games Lost: {team}", value=lost_games)
 
 
 # # Create Colored Prem Table
 
-# In[363]:
+# In[37]:
 
 
 #rename columns and filter values
@@ -459,7 +459,7 @@ def highlight_color(row):
 prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
-# In[365]:
+# In[39]:
 
 
 col1, col2 = st.columns(2)
@@ -471,7 +471,7 @@ with col1:
 
 # # Goals per Team with Average Line
 
-# In[367]:
+# In[43]:
 
 
 #goals scored by rank
@@ -503,3 +503,4 @@ with col2:
     st.altair_chart(final_chart)
 
 #final_chart
+
