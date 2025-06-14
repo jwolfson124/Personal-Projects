@@ -396,7 +396,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.subheader('Total Premier League Goals')
-    st.metric(label=' ',value=total_goals)
+    st.metric(label='Total Premier League Goals',value=total_goals)
 
 
 # # Create Colored Prem Table
