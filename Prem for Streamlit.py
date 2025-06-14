@@ -395,8 +395,8 @@ most_goals_in_game = max(games['Total Goals'])
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.subheader('Total Premier League Goals')
-    st.metric(label=' ',value=total_goals)
+    #st.subheader('Total Premier League Goals')
+    st.metric(label='Total Premier League Goals',value=total_goals)
 
 with col2:
     st.subheader('Most Goals Scored in 1 Match')
@@ -502,6 +502,4 @@ with col2:
     st.subheader('Goals by Rank')
     st.altair_chart(final_chart)
 
-final_chart
-
-st.write('hello')
+#final_chart
