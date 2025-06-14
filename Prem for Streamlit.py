@@ -418,7 +418,7 @@ stadium, team = stadium_visit[['Stadium', 'Team']].loc[index_use]
 
 with col4:
     #st.subheader(f"Odds of Winning when visiting {team}'s {stadium}")
-    st.metric(label = f"Lowest Away Win Odds: {team} – {stadium}", value=round(odds_of_winning),2)
+    st.metric(label = f"Lowest Away Win Odds: {team} – {stadium}", value=round(odds_of_winning,2))
 
 
 #least amount of games lost
