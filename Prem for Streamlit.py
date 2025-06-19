@@ -537,7 +537,7 @@ with col1:
     st.altair_chart(scatter_plot)
 
 
-# In[302]:
+# In[304]:
 
 
 ## Weekly Goals
@@ -547,13 +547,15 @@ goals_df['Total Goals'] = goals_df['HomeGoals'] + goals_df['AwayGoals']
 goals = pd.DataFrame(goals_df.groupby('Wk')['Total Goals'].sum())
 goals = goals.reset_index()
 
-alt.Chart(goals).mark_line(point=True).encode(
+weekly_goals = alt.Chart(goals).mark_line(point=True).encode(
     x=alt.X('Wk:O', title='Match Day'),
     y=alt.Y('Total Goals:Q', title='Weekly Goals'),
     tooltip='Total Goals'
-).properties(
-    title='Weekly Goal Trend'
 )
+
+with col2:
+    st.subheader('Weekly Goal Trend')
+    st.altair_chart(weekly_goals)
 
 
 # In[ ]:
