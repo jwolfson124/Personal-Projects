@@ -10,7 +10,7 @@
 #display(hardest_stadiums_win.head(2))##Hardest to beat at home
 
 
-# In[9]:
+# In[61]:
 
 
 #import libraries and packages
@@ -26,7 +26,7 @@ import altair as alt
 st.set_page_config(layout='wide') #make sure we can use the entire streamlit page
 
 
-# In[11]:
+# In[63]:
 
 
 #take the path from the kaggle website
@@ -45,7 +45,7 @@ df = df[df['Season_End_Year'] >= 2021]
 
 # ### add in the stadium name for the teams
 
-# In[13]:
+# In[65]:
 
 
 team_to_stadium = {
@@ -86,7 +86,7 @@ df['Stadium'] = df.apply(get_stadium, axis=1)
 
 # ### add in the name of the stadium and the capacity for the home team
 
-# In[15]:
+# In[67]:
 
 
 ##build the capacity dictionaries
@@ -198,7 +198,7 @@ df['Capacity'] = df.apply(get_capacity, axis=1)
 
 # ## Add Columns to the DF
 
-# In[17]:
+# In[69]:
 
 
 #using the where functioon, which operates as in if statement add in the winning team column
@@ -210,7 +210,7 @@ df['Goal Difference'] = abs(df['HomeGoals'] - df['AwayGoals'])
 
 # # Building the Premier League Table
 
-# In[19]:
+# In[71]:
 
 
 ##split the df into winning teams vs draws. Use this to properly give points to the teams
@@ -232,7 +232,7 @@ draw_points = pd.concat([home_results,away_results]).groupby(['Season_End_Year',
 
 
 
-# In[21]:
+# In[73]:
 
 
 #create a df that holds all points for winning teams then join to draw_points to recreate the prem table over the last 3 years
@@ -257,7 +257,7 @@ final_table = points_tally_df.sort_values(['Season_End_Year', 'points'], ascendi
 #final_table
 
 
-# In[23]:
+# In[75]:
 
 
 ##calculate the goals scored
@@ -273,7 +273,7 @@ goals_scored = pd.concat([home_goals, away_goals]).groupby(['Season_End_Year', '
 points_goals_df = pd.merge(final_table, goals_scored, on=['Season_End_Year','Team'])
 
 
-# In[25]:
+# In[77]:
 
 
 #groupy by the home then away team and sum the different goals
@@ -290,7 +290,7 @@ goal_difference = pd.concat([home, away]).groupby(['Season_End_Year', 'Team'], a
 final_prem_table = pd.merge(points_goals_df, goal_difference, on=['Season_End_Year', 'Team'])
 
 
-# In[27]:
+# In[79]:
 
 
 prem_table = final_prem_table.sort_values(['Season_End_Year','points', 'Goal Difference', 'Goals'], ascending=[True, False, False, False])
@@ -307,7 +307,7 @@ prem_table = prem_table[['Season_End_Year', 'Team', 'rank', 'points', 'Goal Diff
 
 # # The Teams that are hardest to beat Home and Away
 
-# In[29]:
+# In[81]:
 
 
 #take the tie dataframe that we had before and then also create a dataframe that holds not ties
@@ -342,7 +342,7 @@ comp_teams['rank'] = comp_teams.groupby('Season_End_Year').cumcount() + 1
 
 # # Hardest Stadiums To Visit
 
-# In[31]:
+# In[83]:
 
 
 away_winners = df[df['Away'] == df['Winning_Team']]
@@ -360,7 +360,7 @@ hardest_stadiums_win['Odds of Winning'] = round(hardest_stadiums_win['Games Lost
 #display(hardest_stadiums_win.head(2))
 
 
-# In[33]:
+# In[85]:
 
 
 #write an intro
@@ -375,7 +375,7 @@ select_season = st.selectbox("Select a Premier League Season to get the Stats!",
 
 # ## Add Totals / Averages
 
-# In[45]:
+# In[87]:
 
 
 year_table = prem_table[prem_table['Season_End_Year'] == select_season]
@@ -435,7 +435,7 @@ with col5:
 
 # # Create Colored Prem Table
 
-# In[37]:
+# In[89]:
 
 
 #rename columns and filter values
@@ -459,7 +459,7 @@ def highlight_color(row):
 prem_table_image = filtered_prem_table.style.apply(highlight_color, axis=1)
 
 
-# In[39]:
+# In[91]:
 
 
 col1, col2 = st.columns(2)
@@ -471,7 +471,7 @@ with col1:
 
 # # Goals per Team with Average Line
 
-# In[43]:
+# In[93]:
 
 
 #goals scored by rank
@@ -503,4 +503,40 @@ with col2:
     st.altair_chart(final_chart)
 
 #final_chart
+
+
+# ## Goals Over the Season
+
+# In[176]:
+
+
+col1, col2 = st.columns(2)
+
+#create a running tally of the total goals scored throughout the premier league per week
+df['Total Goals'] = df['HomeGoals'] + df['AwayGoals']
+
+#limit the season to be the selected season
+my_season = df[df['Season_End_Year'] == select_season]
+
+#group the season by the total number of goals per week
+my_season = pd.DataFrame(my_season.groupby('Wk')[['HomeGoals', 'AwayGoals']].sum())
+
+my_season = my_season.reset_index()
+
+chart_data = my_season.melt(id_vars='Wk', value_vars=['HomeGoals', 'AwayGoals'],
+               var_name='Goals Home vs Away', value_name='Goals')
+
+line_chart = alt.Chart(chart_data).mark_line(point=True).encode(
+    x=alt.X('Wk:Q', title='Week'),
+    y=alt.Y('Goals:Q', title='Goals Scored'),
+    color='GoalType:N'
+).properties( #this is where you input title of chart and shape information
+    title='Home vs Away Goals per Week',
+    width=700,
+    height=400
+)
+
+with col1:
+    st.subheader('Home vs Away Goals')
+    st.altair_chart(line_chart)
 
