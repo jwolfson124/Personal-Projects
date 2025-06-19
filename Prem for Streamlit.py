@@ -435,7 +435,7 @@ with col5:
 
 # # Create Colored Prem Table
 
-# In[89]:
+# In[316]:
 
 
 #rename columns and filter values
@@ -471,7 +471,7 @@ with col1:
 
 # # Goals per Team with Average Line
 
-# In[93]:
+# In[318]:
 
 
 #goals scored by rank
@@ -494,7 +494,6 @@ mean_line = alt.Chart(pd.DataFrame({'Average Goals': [average_goals]})).mark_rul
 
 #create final image
 final_chart = (chart + mean_line).properties(
-    title='Goals Scored by Rank',
     width=600,
     height=400)
 
@@ -513,7 +512,7 @@ with col2:
 
 
 
-# In[270]:
+# In[320]:
 
 
 col1, col2 = st.columns(2)
@@ -526,7 +525,7 @@ scatter_plot = alt.Chart(filtered_prem_table).mark_circle(size=100).encode(
     x=alt.X('Goal Difference:Q', title = 'Goal Difference'),
     y=alt.Y('Points:Q', title='Points'),
     tooltip=['Team', 'Goal Difference', 'Points'],
-    color=alt.Color('Goal Difference:N', sort=alt.EncodingSortField(field='Rank', order='ascending'))
+    color=alt.Color('Goal Difference:Q', sort=alt.EncodingSortField(field='Rank', order='ascending'))
 ).properties(
     width=650,
     height=400
@@ -537,7 +536,7 @@ with col1:
     st.altair_chart(scatter_plot)
 
 
-# In[304]:
+# In[322]:
 
 
 ## Weekly Goals
@@ -551,11 +550,15 @@ weekly_goals = alt.Chart(goals).mark_line(point=True).encode(
     x=alt.X('Wk:O', title='Match Day'),
     y=alt.Y('Total Goals:Q', title='Weekly Goals'),
     tooltip='Total Goals'
+).properties(
+    width=650,
+    height=400
 )
 
 with col2:
     st.subheader('Weekly Goal Trend')
     st.altair_chart(weekly_goals)
+
 
 
 # In[ ]:
