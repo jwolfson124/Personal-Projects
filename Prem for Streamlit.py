@@ -512,32 +512,22 @@ with col2:
 
 col1, col2 = st.columns(2)
 
-#create a running tally of the total goals scored throughout the premier league per week
-df['Total Goals'] = df['HomeGoals'] + df['AwayGoals']
 
-#limit the season to be the selected season
-my_season = df[df['Season_End_Year'] == select_season]
+#filtered_prem_table['Points'] = pd.to_numeric(filtered_prem_table['Points'])
 
-#group the season by the total number of goals per week
-my_season = pd.DataFrame(my_season.groupby('Wk')[['HomeGoals', 'AwayGoals']].sum())
-
-chart_data = my_season.melt(id_vars='Wk', value_vars=['HomeGoals', 'AwayGoals'],
-               var_name='Goals Home vs Away', value_name='Goals')
-
-chart_data = chart_data.sort_values(by='Wk')
-chart_data['Cumsum Goals'] = chart_data.groupby('Goals Home vs Away')['Goals'].cumsum()
-
-line_chart = alt.Chart(chart_data).mark_line(point=True).encode(
-    x=alt.X('Wk:Q', title='Week'),
-    y=alt.Y('Cumsum Goals:Q', title='All Goals Scored'),
-    color='Goals Home vs Away:N'
-).properties( #this is where you input title of chart and shape information
-    title='Home vs Away Goals per Week',
-    width=700,
+#goal difference vs points
+scatter_plot = alt.Chart(filtered_prem_table).mark_circle(size=100).encode(
+    x=alt.X('Goal Difference:Q', title = 'Goal Difference'),
+    y=alt.Y('Points:Q', title='Points'),
+    tooltip=['Team', 'Goal Difference', 'Points'],
+    color=alt.Color('Goal Difference:Q', sort=alt.EncodingSortField(field='Rank', order='ascending'))
+).properties(
+    title='Goal Difference vs Points',
+    width=650,
     height=400
 )
 
 with col1:
-    st.subheader('Home vs Away Goals')
-    st.altair_chart(line_chart)
+    st.subheader('Goal Difference vs Points')
+    st.altair_chart(scatter_plot)
 
