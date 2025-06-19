@@ -502,32 +502,5 @@ with col2:
     st.subheader('Goals by Rank')
     st.altair_chart(final_chart)
 
-#final_chart
 
-
-# ## Goals Over the Season
-
-# In[176]:
-
-
-col1, col2 = st.columns(2)
-
-
-#filtered_prem_table['Points'] = pd.to_numeric(filtered_prem_table['Points'])
-
-#goal difference vs points
-scatter_plot = alt.Chart(filtered_prem_table).mark_circle(size=100).encode(
-    x=alt.X('Goal Difference:Q', title = 'Goal Difference'),
-    y=alt.Y('Points:Q', title='Points'),
-    tooltip=['Team', 'Goal Difference', 'Points'],
-    color=alt.Color('Goal Difference:Q', sort=alt.EncodingSortField(field='Rank', order='ascending'))
-).properties(
-    title='Goal Difference vs Points',
-    width=650,
-    height=400
-)
-
-with col1:
-    st.subheader('Goal Difference vs Points')
-    st.altair_chart(scatter_plot)
 
