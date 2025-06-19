@@ -529,7 +529,7 @@ chart_data = my_season.melt(id_vars='Wk', value_vars=['HomeGoals', 'AwayGoals'],
 line_chart = alt.Chart(chart_data).mark_line(point=True).encode(
     x=alt.X('Wk:Q', title='Week'),
     y=alt.Y('Goals:Q', title='Goals Scored'),
-    color='GoalType:N'
+    color='Goals Home vs Away:N'
 ).properties( #this is where you input title of chart and shape information
     title='Home vs Away Goals per Week',
     width=700,
