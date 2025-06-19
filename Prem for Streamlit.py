@@ -507,13 +507,13 @@ with col2:
 
 # ## Goals Over the Season
 
-# In[241]:
+# In[ ]:
 
 
-filtered_prem_table
 
 
-# In[267]:
+
+# In[270]:
 
 
 col1, col2 = st.columns(2)
@@ -526,9 +526,8 @@ scatter_plot = alt.Chart(filtered_prem_table).mark_circle(size=100).encode(
     x=alt.X('Goal Difference:Q', title = 'Goal Difference'),
     y=alt.Y('Points:Q', title='Points'),
     tooltip=['Team', 'Goal Difference', 'Points'],
-    color=alt.Color('Team:N', sort=alt.EncodingSortField(field='Rank', order='ascending'))
+    color=alt.Color('Goal Difference:N', sort=alt.EncodingSortField(field='Rank', order='ascending'))
 ).properties(
-    title='Goal Difference vs Points',
     width=650,
     height=400
 )
@@ -538,10 +537,23 @@ with col1:
     st.altair_chart(scatter_plot)
 
 
-# In[227]:
+# In[302]:
 
 
+## Weekly Goals
+goals_df = df[df['Season_End_Year'] == select_season].copy()
+goals_df['Total Goals'] = goals_df['HomeGoals'] + goals_df['AwayGoals']
 
+goals = pd.DataFrame(goals_df.groupby('Wk')['Total Goals'].sum())
+goals = goals.reset_index()
+
+alt.Chart(goals).mark_line(point=True).encode(
+    x=alt.X('Wk:O', title='Match Day'),
+    y=alt.Y('Total Goals:Q', title='Weekly Goals'),
+    tooltip='Total Goals'
+).properties(
+    title='Weekly Goal Trend'
+)
 
 
 # In[ ]:
