@@ -5,3 +5,6 @@ streamlit
 matplotlib
 altair
 sklearn
+sklearn.model_selection
+sklearn.linear_model
+sklearn.metrics
