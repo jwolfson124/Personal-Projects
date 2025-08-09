@@ -1,8 +1,8 @@
-kagglehub
+streamlit
 pandas
 numpy
-streamlit
+kagglehub
+scikit-learn
+statsmodels
 matplotlib
 altair
-sklearn
-statsmodels
